@@ -1,8 +1,8 @@
 // First we'll generate a text file in a subdirectory on one node and stash it.
-stage "first step on first node"
+stage("first step on first node")
 
 // Run on a node with the "first-node" label.
-node('first-node') {
+node('master') {
     // Make the output directory.
     sh "mkdir -p output"
 
