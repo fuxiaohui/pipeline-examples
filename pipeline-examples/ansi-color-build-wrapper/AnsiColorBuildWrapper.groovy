@@ -1,5 +1,6 @@
 // This shows a simple build wrapper example, using the AnsiColor plugin.
 // AnsiColor插件的使用
+// 可参照: https://wiki.jenkins.io/display/JENKINS/AnsiColor+Plugin
 node {
     // This displays colors using the 'xterm' ansi color map.
     // 使用xterm的配色方式
