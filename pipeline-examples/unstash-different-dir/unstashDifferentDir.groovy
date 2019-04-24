@@ -14,27 +14,28 @@ node('master') {
         // Stash that directory and file.
         // Note that the includes could be "output/", "output/*" as below, or even
         // "output/**/*" - it all works out basically the same.
+        // 把output文件夹及其内容存入first-stash文件夹
         stash name: "first-stash", includes: "output/*"
     }
 }
 
-// Next, we'll make a new directory on a second node, and unstash the original
-// into that new directory, rather than into the root of the build.
-
 
 // 在jenkins的second-node节点上执行
-node('master') {
+node('second-node') {
     stage("second step on second node") {
         // Run the unstash from within that directory!
+        // 把first-stash文件夹中内容提取出来
         dir("first-stash") {
             unstash "first-stash"
         }
 
         // Look, no output directory under the root!
         // pwd() outputs the current directory Pipeline is running in.
+        // 展示当前工作区中的所有文件
         sh "ls -la ${pwd()}"
 
         // And look, output directory is there under first-stash!
+        // 展示first-stash文件夹中的所有文件
         sh "ls -la ${pwd()}/first-stash"
     }
 }
