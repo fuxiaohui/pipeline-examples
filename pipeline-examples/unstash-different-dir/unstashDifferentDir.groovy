@@ -2,7 +2,7 @@
 
 // 在jenkins的master节点上执行
 node('master') {
-    stage("first step on first node") {
+    stage("first step on master node") {
         // Make the output directory.
         // 创建output文件夹
         sh "mkdir -p output"
@@ -20,9 +20,9 @@ node('master') {
 }
 
 
-// 在jenkins的second-node节点上执行
-node('second-node') {
-    stage("second step on second node") {
+// 在jenkins的slave节点上执行
+node('slave') {
+    stage("second step on slave node") {
         // Run the unstash from within that directory!
         // 把first-stash文件夹中内容提取出来
         dir("first-stash") {
