@@ -13,7 +13,7 @@ node {
         // A sleep to make sure we actually get a real difference!
         // 休眠30秒, 感受一下不同的地方(连休眠都会有日志输入, 并且也有时间)
         stage("Sleeping") {
-            sleep 30
+            sleep 30 as long
         }
 
         // And a final echo to show the time when we wrap up.
