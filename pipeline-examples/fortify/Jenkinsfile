@@ -1,0 +1,39 @@
+node {
+    def fortifySourceAnalyzerPath = "/opt/Fortify/Fortify_SCA_and_Apps_18.10/bin/sourceanalyzer"
+    def fortifyReportGeneratorPath = "/opt/Fortify/Fortify_SCA_and_Apps_18.10/bin/ReportGenerator"
+    def fortifyXMLParserPath = ""
+    def svnUrl = ""
+    def projectName = svnUrl.split("/").last()
+    def mavenRepository = ""
+
+    stage("SVN Checkout") {
+        bat "svn checkout $svnUrl --username fxh --password 123"
+    }
+
+    stage("Maven Install") {
+        if (fileExits("$projectName/pom.xml")) {
+            bat "cd $projectName & mvn install"
+        }
+    }
+
+    stage("Fortify Clean") {
+        bat "$fortifySourceAnalyzerPath -clean -b result"
+    }
+
+    stage("Fortify Translate") {
+        bat "$fortifySourceAnalyzerPath -b result -machine-output -cp $mavenRepository/**/*.jar -source 1.8 $projectName/**/*"
+    }
+
+    stage("Fortify Scan") {
+        bat "$fortifySourceAnalyzerPath -b result -scan -f result.fpr"
+    }
+
+    stage("FPR to XML") {
+        bat "$fortifyReportGeneratorPath -format xml -f result.xml -source result.fpr"
+    }
+
+    stage("Parse XML") {
+        bat "java -jar $fortifyXMLParserPath result.xml"
+    }
+
+}
